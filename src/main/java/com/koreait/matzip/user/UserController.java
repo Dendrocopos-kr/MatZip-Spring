@@ -25,14 +25,14 @@ public class UserController {
 	private UserService service;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String _login(Model model) {
+	public String login(Model model) {
 		model.addAttribute("title", "로그인");
 		model.addAttribute("view", "/user/login");
 		return ViewRef.TEMP_DEFAULT;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String _login_Proc(UserParam param,HttpSession hs, RedirectAttributes ra) {
+	public String login(UserParam param,HttpSession hs, RedirectAttributes ra) {
 		int result = service.login(param);
 		if (result == Const.SUCCESS) {
 			hs.setAttribute(Const.LOGIN_USER, param);
@@ -52,7 +52,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
-	public String _join(Model model, @RequestParam(required = false) Integer err) {
+	public String join(Model model, @RequestParam(required = false) Integer err) {
 		//@RequestParam
 		//required = 필수냐?
 		//value="err" 받아올 쿼리 스트링명 변수명과 같으면 생략가능
@@ -63,7 +63,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
-	public String _join_Proc(UserParam param, RedirectAttributes ra) {
+	public String join(UserParam param, RedirectAttributes ra) {
 		int result = service.join(param);
 		if( result == Const.SUCCESS ) {
 			return "redirect:/user/login";
@@ -74,7 +74,7 @@ public class UserController {
 	
 	@RequestMapping(value = "/ajaxIdChk", method = RequestMethod.POST)
 	@ResponseBody
-	public String _chkId(@RequestBody UserParam param) {
+	public String ajaxIdChk(@RequestBody UserParam param) {
 		int result = service.login(param);
 		return String.valueOf(result);
 	}

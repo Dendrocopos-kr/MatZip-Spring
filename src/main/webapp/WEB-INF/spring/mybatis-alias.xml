@@ -8,5 +8,8 @@
 		<typeAlias type="com.koreait.matzip.user.model.UserVO" alias="UserVO"/>
 		<typeAlias type="com.koreait.matzip.user.model.UserDMI" alias="UserDMI"/>
 		<typeAlias type="com.koreait.matzip.user.model.UserParam" alias="UserParam"/>
+		<typeAlias type="com.koreait.matzip.rest.model.RestVO" alias="RestVO"/>
+		<typeAlias type="com.koreait.matzip.rest.model.RestDMI" alias="RestDMI"/>
+		<typeAlias type="com.koreait.matzip.rest.model.RestParam" alias="RestParam"/>
 	</typeAliases>
 </configuration>

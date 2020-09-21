@@ -1,4 +1,4 @@
-package com.koreait.matzip.model;
+package com.koreait.matzip.rest.model;
 
 public class CodeDomain {
 	private int i_m;

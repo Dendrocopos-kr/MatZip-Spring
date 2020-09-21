@@ -1,6 +1,6 @@
-package com.koreait.matzip.model;
+package com.koreait.matzip.rest.model;
 
-public class RestaurantRecommendMenuDomain extends RestaurantRecommendMenuVO{
+public class RestRecMenuDMI extends RestRecMenuVO{
 	private int i_user;
 
 	public int getI_user() {

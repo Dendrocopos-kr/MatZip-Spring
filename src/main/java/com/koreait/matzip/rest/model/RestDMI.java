@@ -1,6 +1,6 @@
-package com.koreait.matzip.model;
+package com.koreait.matzip.rest.model;
 
-public class RestaurantDomain extends RestaurantVO {
+public class RestDMI extends RestVO {
 	private String userNm;
 	private int cntHits;
 	private int cntFavorite;
