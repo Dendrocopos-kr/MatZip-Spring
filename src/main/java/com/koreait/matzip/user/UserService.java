@@ -15,19 +15,17 @@ public class UserService {
 	private UserMapper mapper;
 
 	public int login(UserParam param) {
-		if(param.getUser_id().equals("")) {return Const.NO_ID;}
+		if(param.getUser_id().equals("")) { return Const.NO_ID; }
 		UserDMI dbUser = mapper.selUser(param);
-		if (dbUser == null) {return Const.NO_ID;}
+		if(dbUser == null) { return Const.NO_ID; }
 		
-		String salt = dbUser.getSalt();
-		String encryptPw = SecurityUtils.getEncrypt(param.getUser_pw(), salt);
-
-		if (!encryptPw.equals(dbUser.getUser_pw())) {return Const.NG_PW;}
+		String cryptPw = SecurityUtils.getEncrypt(param.getUser_pw(), dbUser.getSalt());
+		if(!cryptPw.equals(dbUser.getUser_pw())) { return Const.NG_PW; }
 		
 		param.setUser_pw(null);
 		param.setNm(dbUser.getNm());
 		param.setProfile_img(dbUser.getProfile_img());
-		return Const.SUCCESS;
+		return Const.SUCCESS;		
 	}
 
 	public int join(UserParam param) {
