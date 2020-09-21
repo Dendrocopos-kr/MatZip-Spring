@@ -11,7 +11,7 @@
 		values
 		(#{user_id},#{user_pw},#{salt},#{nm})
 	</insert>
-	<select id="selUser" parameterType="UserDTO"
+	<select id="selUser" parameterType="UserParam"
 		resultType="UserDMI">
 		select i_user, user_id, user_pw, salt, nm, profile_img, r_dt
 		from t_user
