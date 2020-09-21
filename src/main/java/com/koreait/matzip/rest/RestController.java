@@ -1,11 +1,13 @@
-package com.koreait.matzip.user;
+package com.koreait.matzip.rest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping(value = "/rest", method = RequestMethod.GET)
+@RequestMapping("/rest")
 public class RestController {
-
+	@RequestMapping("/map")
+	public String restMap() {
+		return "";
+	}
 }
