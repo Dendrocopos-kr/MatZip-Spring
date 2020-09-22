@@ -46,10 +46,11 @@
 	<div id="mapContainer" style="width: 100%; height: 100%;"></div>
 
 	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4d1e96707b7bb1207994c7b55faad5e2"></script>
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4d1e96707b7bb1207994c7b55faad5e2&libraries=services,clusterer,drawing"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script>
-			
+	
+		var markers = []
 		const options = { //지도를 생성할 때 필요한 기본 옵션
 			center: new kakao.maps.LatLng(35.958437, 128.486084), //지도의 중심좌표.
 			level: 5 //지도의 레벨(확대, 축소 정도)
@@ -58,6 +59,9 @@
 		const map = new kakao.maps.Map(mapContainer, options);
 			
 		function getRestaurantList() {
+			
+			markers.forEach( function(marker){ marker.setMap(null) } )
+			
 			const bounds = map.getBounds()
 			const southWest = bounds.getSouthWest()
 			const northEast = bounds.getNorthEast()
@@ -83,21 +87,21 @@
 			})		
 		}
 		
-		kakao.maps.event.addListener(map, 'dragend', getRestaurantList)
-		kakao.maps.event.addListener(map, 'zoom_changed', getRestaurantList)
+		kakao.maps.event.addListener(map, 'tilesloaded',getRestaurantList)
+		
 		
 		//마커생성
-		function createMarker(item) {			
-			var content = document.createElement('div')
+		function createMarker(item) {
+			const content = document.createElement('div')
 			content.className = 'label'
 			
-			var leftSpan = document.createElement('span')
+			const leftSpan = document.createElement('span')
 			leftSpan.className = 'left'
 			
-			var rightSpan = document.createElement('span')
+			const rightSpan = document.createElement('span')
 			rightSpan.className = 'right'
 			
-			var centerSpan = document.createElement('span')
+			const centerSpan = document.createElement('span')
 			centerSpan.className = 'center'
 			centerSpan.innerText = item.nm
 			
@@ -105,8 +109,8 @@
 			content.appendChild(centerSpan)
 			content.appendChild(rightSpan)			
 			//var content = `<div class ="label"><span class="left"></span><span class="center">\${item.nm}</span><span class="right"></span></div>`
-			var mPos = new kakao.maps.LatLng(item.lat, item.lng)			
-			var marker = new kakao.maps.CustomOverlay({
+			const mPos = new kakao.maps.LatLng(item.lat, item.lng)			
+			const marker = new kakao.maps.CustomOverlay({
 			    position: mPos,
 			    content: content
 			});			
@@ -116,10 +120,11 @@
 			})
 			
 			marker.setMap(map)
+			markers.push(marker)
 		}
 		
 		function moveToDetail(i_rest) {
-			location.href = '/restaurant/restDetail?i_rest=' + i_rest
+			location.href = '/rest/detail?i_rest=' + i_rest
 		}
 		
 		function addEvent(target, type, callback) {

@@ -52,7 +52,7 @@ a {
 	flex-grow: 1;
 }
 
-#container > header > #headerRight > a {
+#container > header > #headerRight div a {
 	font-weight: bold;
 	font-size: 1.4em;
 }

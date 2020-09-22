@@ -5,15 +5,35 @@
 
 <mapper namespace="com.koreait.matzip.rest.RestMapper">
 	<select id="selRestList" parameterType="RestParam" resultType="RestDMI">
-		SELECT i_rest,nm,lat,lng 
-		FROM t_restaurant
-		WHERE lat between #{sw_lat} AND #{ne_lat}
-		AND lng between #{sw_lng} AND #{ne_lng}
+		SELECT i_rest,nm,lat,lng
+		FROM
+		t_restaurant
+		WHERE lat between
+		#{sw_lat} AND #{ne_lat}
+		AND
+		lng between
+		#{sw_lng} AND #{ne_lng}
 	</select>
 	<insert id="insRest" parameterType="RestParam">
-	insert into t_restaurant
-	(nm, addr, lat, lng, i_user, cd_category)
-	VALUES
-	(#{nm},#{addr},#{lat},#{lng},#{i_user},#{cd_category})	
+		insert into t_restaurant
+		(nm,
+		addr, lat, lng, i_user, cd_category)
+		VALUES
+		(#{nm},#{addr},#{lat},#{lng},#{i_user},#{cd_category})
 	</insert>
+
+	<select id="selRest" parameterType="RestParam" resultType="RestDMI">
+		SELECT A.i_rest, A.lat, A.lng, A.nm, A.addr,
+		A.i_user, A.hits, IFNULL(B.val,'') AS cd_category_nm,
+		C.nm AS user_nm, IFNULL(D.cnt,0) AS cnt_favorite
+		FROM t_restaurant A
+		INNER JOIN c_code_d B ON A.cd_category = B.cd AND B.i_m= 1
+		LEFT JOIN t_user C ON C.i_user = A.i_user
+		LEFT JOIN (
+		SELECT i_rest, COUNT(i_rest) AS cnt
+		FROM t_user_favorite
+		WHERE i_rest = #{i_rest}
+		GROUP BY i_rest) D ON A.i_rest = D.i_rest
+		WHERE A.i_rest = #{i_rest};
+	</select>
 </mapper>

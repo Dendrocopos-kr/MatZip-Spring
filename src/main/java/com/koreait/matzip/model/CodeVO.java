@@ -1,6 +1,6 @@
-package com.koreait.matzip.rest.model;
+package com.koreait.matzip.model;
 
-public class CodeDomain {
+public class CodeVO {
 	private int i_m;
 	private int cd;
 	private String val;

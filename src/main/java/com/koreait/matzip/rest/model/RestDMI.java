@@ -1,34 +1,25 @@
 package com.koreait.matzip.rest.model;
 
 public class RestDMI extends RestVO {
-	private String userNm;
-	private int cntHits;
-	private int cntFavorite;
+	private String user_nm;
+	private int cnt_favorite;
 	private String cd_category_nm;
 	
 	
-	public String getUserNm() {
-		return userNm;
+	public String getUser_nm() {
+		return user_nm;
 	}
 
-	public void setUserNm(String userNm) {
-		this.userNm = userNm;
+	public void setUser_nm(String user_nm) {
+		this.user_nm = user_nm;
 	}
 
-	public int getCntHits() {
-		return cntHits;
+	public int getCnt_favorite() {
+		return cnt_favorite;
 	}
 
-	public void setCntHits(int cntHits) {
-		this.cntHits = cntHits;
-	}
-
-	public int getCntFavorite() {
-		return cntFavorite;
-	}
-
-	public void setCntFavorite(int cntFavorite) {
-		this.cntFavorite = cntFavorite;
+	public void setCnt_favorite(int cnt_favorite) {
+		this.cnt_favorite = cnt_favorite;
 	}
 
 	public String getCd_category_nm() {

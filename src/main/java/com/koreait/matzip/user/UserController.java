@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.koreait.matzip.Const;
@@ -31,6 +32,16 @@ public class UserController {
 		return ViewRef.TEMP_DEFAULT;
 	}
 
+	/*
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView login(ModelAndView model) {
+		model.addObject("title", "로그인");
+		model.addObject("view", "/user/login");
+		model.setViewName(ViewRef.TEMP_DEFAULT);
+		return model;
+	}
+	*/
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(UserParam param,HttpSession hs, RedirectAttributes ra) {
 		int result = service.login(param);
@@ -49,6 +60,12 @@ public class UserController {
 		ra.addFlashAttribute("data",param);
 		
 		return "redirect:/user/login";
+	}
+	
+	@RequestMapping(value = "/logout")
+	public String logout(Model model, HttpSession hs) {
+		hs.invalidate();
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/join", method = RequestMethod.GET)

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -10,10 +9,10 @@
 			<div class="recMenuItem" id="recMenuItem_${item.seq}">
 				<div class="pic">
 					<c:if test="${item.menu_pic == null }">
-						<img src="/res/img/restaurant/default_menu.jfif">
+						<img src="/resources/img/rest/default_menu.jfif">
 					</c:if>
 					<c:if test="${item.menu_pic != null }">
-						<img src="/res/img/restaurant/${item.i_rest}/${item.menu_pic}">
+						<img src="/resources/img/rest/${item.i_rest}/${item.menu_pic}">
 					</c:if>
 					<div class="info">
 						<div class="nm">${item.menu_nm}</div>
@@ -24,8 +23,7 @@
 				</div>
 				<c:if test="${loginUser.i_user == data.i_user}">
 					<%-- <c:if test="${loginUser.i_user == data.i_user && item.menu_pic != null}"> --%>
-					<div class="delIconContainer"
-						onclick="delRecMenu(${item.seq},'${item.menu_pic}')">
+					<div class="delIconContainer" onclick="delRecMenu(${item.seq},'${item.menu_pic}')">
 						<span class="material-icons"> clear </span>
 					</div>
 				</c:if>
@@ -41,8 +39,7 @@
 			<h2>- 추천 메뉴 -</h2>
 			<div>
 				<button onclick="addRecMenu()">추천 메뉴 추가</button>
-				<form id="recFrm" action="/restaurant/addRecMenusProc"
-					enctype="multipart/form-data" method="post">
+				<form id="recFrm" action="/rest/addRecMenus" enctype="multipart/form-data" method="post">
 					<input type="hidden" name="i_rest" value="${data.i_rest}">
 					<div id="recItem"></div>
 					<div>
@@ -52,10 +49,8 @@
 			</div>
 			<h2>- 메뉴 -</h2>
 			<div>
-				<form id="menuFrm" action="/restaurant/addMenusProc"
-					enctype="multipart/form-data" method="post">
-					<input type="file" name="menu_pic" multiple="multiple"> <input
-						type="hidden" name="i_rest" value="${data.i_rest}">
+				<form id="menuFrm" action="/rest/addMenus" enctype="multipart/form-data" method="post">
+					<input type="file" name="menu_pic" multiple="multiple"> <input type="hidden" name="i_rest" value="${data.i_rest}">
 					<div id="menuItem"></div>
 					<div>
 						<input type="submit" value="등록">
@@ -72,8 +67,7 @@
 					</span>
 				</div>
 				<div class="status branch_none">
-					<span class="cnt hit">${data.cntHits}</span> <span
-						class="cnt favorite">${data.cntFavorite}</span>
+					<span class="cnt hit">${data.hits}</span> <span class="cnt favorite">${data.cnt_favorite}</span>
 				</div>
 			</div>
 			<div>
@@ -85,6 +79,10 @@
 							<td>${data.addr}</td>
 						</tr>
 						<tr>
+							<th>작성자</th>
+							<td>${data.user_nm}</td>
+						</tr>
+						<tr>
 							<th>카테고리</th>
 							<td>${data.cd_category_nm}</td>
 						</tr>
@@ -93,11 +91,9 @@
 							<td>
 								<div class="menuList">
 									<c:if test="${fn:length(menuList) >0}">
-										<c:forEach var="i" begin="0"
-											end="${fn:length(menuList) > 3 ? 2 : fn:length(menuList) - 1}">
+										<c:forEach var="i" begin="0" end="${fn:length(menuList) > 3 ? 2 : fn:length(menuList) - 1}">
 											<div class="menuItem">
-												<img
-													src="/res/img/restaurant/${data.i_rest}/menu/${menuList[i].menu_pic}">
+												<img src="/resources/img/rest/${data.i_rest}/menu/${menuList[i].menu_pic}">
 											</div>
 										</c:forEach>
 									</c:if>
@@ -118,6 +114,7 @@
 	<script>
 	var idx = 0;
 	var idx2 = 0;
+	addRecMenu()
 		function addRecMenu() {
 			var div = document.createElement('div')
 
@@ -143,12 +140,12 @@
 		
 		function isDel() {
 			if (confirm('삭제 하시겠습니까?')) {
-				location.href = '/restaurant/restDel?i_rest=${data.i_rest}'
+				location.href = '/rest/restDel?i_rest=${data.i_rest}'
 			}
 		}
 		
 		function delRecMenu(seq,fileNm) {
-			axios.get('/restaurant/ajaxDelRecMenu',{
+			axios.get('/rest/ajaxDelRecMenu',{
 				params:{
 					i_rest : ${data.i_rest},
 					seq,
