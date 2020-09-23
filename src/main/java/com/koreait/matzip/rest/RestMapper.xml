@@ -26,14 +26,41 @@
 		SELECT A.i_rest, A.lat, A.lng, A.nm, A.addr,
 		A.i_user, A.hits, IFNULL(B.val,'') AS cd_category_nm,
 		C.nm AS user_nm, IFNULL(D.cnt,0) AS cnt_favorite
-		FROM t_restaurant A
+		FROM
+		t_restaurant A
 		INNER JOIN c_code_d B ON A.cd_category = B.cd AND B.i_m= 1
-		LEFT JOIN t_user C ON C.i_user = A.i_user
+		LEFT JOIN t_user C ON C.i_user =
+		A.i_user
 		LEFT JOIN (
 		SELECT i_rest, COUNT(i_rest) AS cnt
 		FROM t_user_favorite
 		WHERE i_rest = #{i_rest}
-		GROUP BY i_rest) D ON A.i_rest = D.i_rest
-		WHERE A.i_rest = #{i_rest};
+		GROUP BY
+		i_rest) D ON A.i_rest = D.i_rest
+		WHERE A.i_rest = #{i_rest}
 	</select>
+
+	<delete id="delRest" parameterType="RestParam">
+		delete from t_restaurant
+		where i_rest = #{i_rest} 
+		AND i_user = #{i_user}
+	</delete>
+	
+	<delete id="delRestMenu" parameterType="RestParam">
+		delete A from t_restaurant_menu A
+		inner join t_restaurant B
+		on a.i_rest = b.i_rest
+		where b.i_rest = #{i_rest} 
+		AND b.i_user = #{i_user}
+	</delete>
+	
+	<delete id="delRestRecMenu" parameterType="RestParam">
+		delete A from t_restaurant_recommend_menu A
+		inner join t_restaurant B
+		on a.i_rest = b.i_rest
+		where b.i_rest = #{i_rest} 
+		AND b.i_user = #{i_user}
+	</delete>
+	
+	
 </mapper>

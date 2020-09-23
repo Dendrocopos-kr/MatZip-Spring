@@ -50,7 +50,8 @@
 			<h2>- 메뉴 -</h2>
 			<div>
 				<form id="menuFrm" action="/rest/addMenus" enctype="multipart/form-data" method="post">
-					<input type="file" name="menu_pic" multiple="multiple"> <input type="hidden" name="i_rest" value="${data.i_rest}">
+					<input type="file" name="menu_pic" multiple="multiple"> 
+					<input type="hidden" name="i_rest" value="${data.i_rest}">
 					<div id="menuItem"></div>
 					<div>
 						<input type="submit" value="등록">
@@ -112,8 +113,6 @@
 	</div>
 
 	<script>
-	var idx = 0;
-	var idx2 = 0;
 	addRecMenu()
 		function addRecMenu() {
 			var div = document.createElement('div')
@@ -126,7 +125,7 @@
 			inputPrice.setAttribute('name', 'menu_price')
 			var inputPic = document.createElement('input')
 			inputPic.setAttribute('type', 'file')
-			inputPic.setAttribute('name', 'menu_pic_' + idx++)
+			inputPic.setAttribute('name', 'menu_pic')
 
 			div.append('메뉴: ')
 			div.append(inputNm)
@@ -140,7 +139,7 @@
 		
 		function isDel() {
 			if (confirm('삭제 하시겠습니까?')) {
-				location.href = '/rest/restDel?i_rest=${data.i_rest}'
+				location.href = '/rest/del?i_rest=${data.i_rest}'
 			}
 		}
 		

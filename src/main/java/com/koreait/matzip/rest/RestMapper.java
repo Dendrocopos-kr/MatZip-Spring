@@ -10,7 +10,11 @@ import com.koreait.matzip.rest.model.RestParam;
 
 @Mapper
 public interface RestMapper {
-	public List<RestDMI> selRestList(RestParam param);
-	public int insRest(RestParam param);
-	public RestDMI selRest(RestParam param);
+	int insRest(RestParam param);
+	List<RestDMI> selRestList(RestParam param);
+	RestDMI selRest(RestParam param);
+	int delRest(RestParam param);
+	int delRestMenu(RestParam param);
+	int delRestRecMenu(RestParam param);
+	int insRecMenus();
 }
