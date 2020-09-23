@@ -83,6 +83,7 @@ public class RestService {
 			int menu_price = CommonUtils.parseStringToInt(menuPriceArr[i]);
 			vo.setMenu_nm(menu_nm);
 			vo.setMenu_price(menu_price);
+			vo.setI_rest(i_rest);
 
 			MultipartFile mf = fileList.get(i);
 			
@@ -100,6 +101,13 @@ public class RestService {
 			}
 		}
 		
-		return mapper.insRecMenus();
+		for(RestRecMenuVO vo : list) {
+			mapper.insRecMenus(vo);
+		}
+		return i_rest;
+	}
+
+	public List<RestRecMenuVO> selRecMenuList(RestRecMenuVO param) {
+		return mapper.selRecMenuList(param);
 	}
 }

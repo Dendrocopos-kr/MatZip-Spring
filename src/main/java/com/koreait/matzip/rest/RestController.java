@@ -23,6 +23,7 @@ import com.koreait.matzip.SecurityUtils;
 import com.koreait.matzip.ViewRef;
 import com.koreait.matzip.rest.model.RestDMI;
 import com.koreait.matzip.rest.model.RestParam;
+import com.koreait.matzip.rest.model.RestRecMenuVO;
 
 @Controller
 @RequestMapping("/rest")
@@ -54,7 +55,6 @@ public class RestController {
 	
 	@RequestMapping(value = "/addRecMenus", method = RequestMethod.POST)
 	public String addRecMenus(MultipartHttpServletRequest mReq, RedirectAttributes ra) {
-		
 		int i_rest = service.insRecMenus(mReq);
 		ra.addAttribute("i_rest",i_rest);
 		return "redirect:/rest/detail";
@@ -69,18 +69,17 @@ public class RestController {
 		}
 		return "redirect:/";
 	}
-		
-	@RequestMapping(value = "/addRecMenus", method = RequestMethod.GET)
-	public String addRecMenus(Model model) {
-		//service.addRecMenus();
-		return ViewRef.TEMP_MENU_TEMP;
-	}
-
 	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public String detail(Model model,RestParam param) {
 		RestDMI data = service.selRest(param);
+		RestRecMenuVO vo = new RestRecMenuVO();
+		vo.setI_rest(param.getI_rest());
+		List<RestRecMenuVO> recMenuList = service.selRecMenuList(vo);
+		
+		model.addAttribute("css", new String[] {"restaurant"});
 		model.addAttribute("data", data);
+		model.addAttribute("recMenuList", recMenuList);
 		model.addAttribute(Const.TITLE, data.getNm());
 		model.addAttribute(Const.VIEW,"rest/detail");
 		return ViewRef.TEMP_MENU_TEMP;

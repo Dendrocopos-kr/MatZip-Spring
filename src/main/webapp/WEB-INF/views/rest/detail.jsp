@@ -4,15 +4,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <div class="recMenuContainer">
-	<c:if test="${ recommendMenuList != null }">
-		<c:forEach items="${recommendMenuList}" var="item">
+	<c:if test="${ recMenuList != null }">
+		<c:forEach items="${recMenuList}" var="item">
 			<div class="recMenuItem" id="recMenuItem_${item.seq}">
 				<div class="pic">
 					<c:if test="${item.menu_pic == null }">
 						<img src="/resources/img/rest/default_menu.jfif">
 					</c:if>
 					<c:if test="${item.menu_pic != null }">
-						<img src="/resources/img/rest/${item.i_rest}/${item.menu_pic}">
+						<img src="/resources/img/rest/${item.i_rest}/rec_menu/${item.menu_pic}">
 					</c:if>
 					<div class="info">
 						<div class="nm">${item.menu_nm}</div>

@@ -12,7 +12,7 @@
 	rel="stylesheet">
 <c:forEach items="${css}" var="item">
 	<link rel="stylesheet" type="text/css"
-		href="/resources/css/${item}.css?ver=17">
+		href="/resources/css/${item}.css?ver=18">
 </c:forEach>
 </head>
 <body>
