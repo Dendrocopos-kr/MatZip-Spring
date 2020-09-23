@@ -1,5 +1,6 @@
 package com.koreait.matzip.rest;
 
+import java.io.File;
 import java.util.List;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
@@ -73,11 +74,9 @@ public class RestController {
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public String detail(Model model,RestParam param) {
 		RestDMI data = service.selRest(param);
-		RestRecMenuVO vo = new RestRecMenuVO();
-		vo.setI_rest(param.getI_rest());
-		List<RestRecMenuVO> recMenuList = service.selRecMenuList(vo);
+		List<RestRecMenuVO> recMenuList = service.selRecMenuList(param);
 		
-		model.addAttribute("css", new String[] {"restaurant"});
+		model.addAttribute("css", new String[] {"restDetail"});
 		model.addAttribute("data", data);
 		model.addAttribute("recMenuList", recMenuList);
 		model.addAttribute(Const.TITLE, data.getNm());
@@ -93,8 +92,10 @@ public class RestController {
 	
 	@RequestMapping(value = "/ajaxDelRecMenu", method = RequestMethod.GET, produces = "application/json; charset=utf8")
 	@ResponseBody
-	public int ajaxDelRecMenu(RestParam param) {
-		return 0;//service.delRecMenu(param);
+	public int ajaxDelRecMenu(RestParam param,HttpSession hs) {
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		String path = "resources/img/rest/"+param.getI_rest()+"/rec_menu/";
+		return service.delRecMenu(param,path);
 	}
 	
 }

@@ -43,7 +43,8 @@
 	<delete id="delRest" parameterType="RestParam">
 		delete from t_restaurant
 		where i_rest = #{i_rest}
-		AND i_user = #{i_user}
+		AND i_user =
+		#{i_user}
 	</delete>
 
 	<delete id="delRestMenu" parameterType="RestParam">
@@ -53,6 +54,9 @@
 		a.i_rest = b.i_rest
 		where b.i_rest = #{i_rest}
 		AND b.i_user = #{i_user}
+		<if test="seq > 0 ">
+		</if>
+			AND A.seq = #{seq}
 	</delete>
 
 	<delete id="delRestRecMenu" parameterType="RestParam">
@@ -62,6 +66,9 @@
 		on a.i_rest = b.i_rest
 		where b.i_rest = #{i_rest}
 		AND b.i_user = #{i_user}
+		<if test="seq > 0 ">
+			AND A.seq = #{seq}
+		</if>
 	</delete>
 
 	<insert id="insRecMenus" parameterType="RestRecMenuVO">
@@ -74,9 +81,18 @@
 		i_rest = #{i_rest}
 	</insert>
 
-	<select id="selRecMenuList" parameterType="RestRecMenuVO" resultType="RestRecMenuVO">
-		SELECT i_rest,seq, menu_nm, menu_price, menu_pic 
-		FROM t_restaurant_recommend_menu 
+	<select id="selRecMenus" parameterType="RestParam" resultType="RestRecMenuVO">
+		SELECT A.i_rest,A.seq, A.menu_nm, A.menu_price, A.menu_pic
+		FROM t_restaurant_recommend_menu A
+		<if test="i_user > 0">
+			inner join t_restaurant B
+			ON A.i_rest = B.i_rest
+			AND B.i_user = #{i_user}
+		</if>
 		where i_rest = #{i_rest}
+		<if test="seq > 0">
+			AND A.seq = #{seq}
+		</if>
 	</select>
+
 </mapper>

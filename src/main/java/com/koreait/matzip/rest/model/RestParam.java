@@ -5,7 +5,14 @@ public class RestParam extends RestVO {
 	double sw_lng;
 	double ne_lat;
 	double ne_lng;
+	int seq;
 	
+	public int getSeq() {
+		return seq;
+	}
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
 	public double getSw_lat() {
 		return sw_lat;
 	}

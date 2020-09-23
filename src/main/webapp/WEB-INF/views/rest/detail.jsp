@@ -23,7 +23,7 @@
 				</div>
 				<c:if test="${loginUser.i_user == data.i_user}">
 					<%-- <c:if test="${loginUser.i_user == data.i_user && item.menu_pic != null}"> --%>
-					<div class="delIconContainer" onclick="delRecMenu(${item.seq},'${item.menu_pic}')">
+					<div class="delIconContainer" onclick="delRecMenu(${item.seq})">
 						<span class="material-icons"> clear </span>
 					</div>
 				</c:if>
@@ -143,15 +143,14 @@
 			}
 		}
 		
-		function delRecMenu(seq,fileNm) {
+		function delRecMenu(seq) {
 			axios.get('/rest/ajaxDelRecMenu',{
 				params:{
 					i_rest : ${data.i_rest},
 					seq,
-					fileNm
 				}
 			}).then(function(res){
-				if(res.data.result == 1){
+				if(res.data == 1){
 					const ele = document.querySelector('#recMenuItem_'+seq)
 					ele.remove()
 				}
