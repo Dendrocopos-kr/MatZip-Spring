@@ -3,6 +3,8 @@ package com.koreait.matzip.rest.model;
 public class RestMenuVO {
 	private int i_rest;
 	private int seq;
+	private String menu_pic;
+	
 	public int getI_rest() {
 		return i_rest;
 	}
@@ -21,5 +23,4 @@ public class RestMenuVO {
 	public void setMenu_pic(String menu_pic) {
 		this.menu_pic = menu_pic;
 	}
-	private String menu_pic;
 }

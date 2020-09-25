@@ -2,163 +2,288 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<div class="recMenuContainer">
-	<c:if test="${ recMenuList != null }">
+<div>
+	<div class="recMenuContainer">
 		<c:forEach items="${recMenuList}" var="item">
 			<div class="recMenuItem" id="recMenuItem_${item.seq}">
 				<div class="pic">
-					<c:if test="${item.menu_pic == null }">
-						<img src="/resources/img/rest/default_menu.jfif">
+					<c:if test="${item.menu_pic != null and item.menu_pic != ''}">
+						<img src="/resources/img/rest/${data.i_rest}/rec_menu/${item.menu_pic}">
 					</c:if>
-					<c:if test="${item.menu_pic != null }">
-						<img src="/resources/img/rest/${item.i_rest}/rec_menu/${item.menu_pic}">
-					</c:if>
-					<div class="info">
-						<div class="nm">${item.menu_nm}</div>
-						<div class="price">
-							<fmt:formatNumber type="currency" value="${item.menu_price}" />
-						</div>
+				</div>
+				<div class="info">
+					<div class="nm">${item.menu_nm}</div>
+					<div class="price">
+						<fmt:formatNumber type="number" value="${item.menu_price}" />
+						원
 					</div>
 				</div>
 				<c:if test="${loginUser.i_user == data.i_user}">
-					<%-- <c:if test="${loginUser.i_user == data.i_user && item.menu_pic != null}"> --%>
 					<div class="delIconContainer" onclick="delRecMenu(${item.seq})">
-						<span class="material-icons"> clear </span>
+						<span class="material-icons">clear</span>
 					</div>
 				</c:if>
 			</div>
 		</c:forEach>
-	</c:if>
-</div>
+	</div>
+	<div id="sectionContainerCenter">
+		<div>
+			<c:if test="${loginUser.i_user == data.i_user}">
+				<button onclick="isDel()">가게 삭제</button>
 
-<div id="sectionContainerCenter">
-	<div>
-		<c:if test="${loginUser.i_user == data.i_user}">
-			<button onclick="isDel()">가게 삭제</button>
-			<h2>- 추천 메뉴 -</h2>
-			<div>
-				<button onclick="addRecMenu()">추천 메뉴 추가</button>
-				<form id="recFrm" action="/rest/addRecMenus" enctype="multipart/form-data" method="post">
-					<input type="hidden" name="i_rest" value="${data.i_rest}">
-					<div id="recItem"></div>
+				<h2>- 추천 메뉴 -</h2>
+				<div>
 					<div>
-						<input type="submit" value="등록">
+						<button type="button" onclick="addRecMenu()">추천 메뉴 추가</button>
 					</div>
-				</form>
-			</div>
-			<h2>- 메뉴 -</h2>
-			<div>
-				<form id="menuFrm" action="/rest/addMenus" enctype="multipart/form-data" method="post">
-					<input type="file" name="menu_pic" multiple="multiple"> 
-					<input type="hidden" name="i_rest" value="${data.i_rest}">
-					<div id="menuItem"></div>
-					<div>
-						<input type="submit" value="등록">
-					</div>
-				</form>
-			</div>
-		</c:if>
+					<form id="recFrm" action="/rest/addRecMenus" enctype="multipart/form-data" method="post">
+						<input type="hidden" name="i_rest" value="${data.i_rest}">
+						<div id="recItem"></div>
+						<div>
+							<input type="submit" value="등록">
+						</div>
+					</form>
+				</div>
 
-		<div class="restaurant-detail">
-			<div id="detail-header">
-				<div class="restaurant_title_wrap">
-					<span class="title">
+				<h2>- 메뉴 -</h2>
+				<div>
+					<form id="menuFrm" action="/rest/addMenus" enctype="multipart/form-data" method="post">
+						<input type="hidden" name="i_rest" value="${data.i_rest}"> <input type="file" name="menu_pic" multiple>
+						<div>
+							<input type="submit" value="등록">
+						</div>
+					</form>
+				</div>
+			</c:if>
+
+			<div class="restaurant-detail">
+				<div id="detail-header">
+					<div class="restaurant_title_wrap">
 						<h1 class="restaurant_name">${data.nm}</h1>
-					</span>
+					</div>
+					<div class="status branch_none">
+						<span class="cnt hit">${data.hits}</span> <span class="cnt favorite">${data.cnt_favorite}</span>
+					</div>
 				</div>
-				<div class="status branch_none">
-					<span class="cnt hit">${data.hits}</span> <span class="cnt favorite">${data.cnt_favorite}</span>
+				<div>
+					<table>
+						<caption>레스토랑 상세 정보</caption>
+						<tbody>
+							<tr>
+								<th>주소</th>
+								<td>${data.addr}</td>
+							</tr>
+							<tr>
+								<th>카테고리</th>
+								<td>${data.cd_category_nm}</td>
+							</tr>
+							<tr>
+								<th>작성자</th>
+								<td>${data.user_nm}</td>
+							</tr>
+							<tr>
+								<th>메뉴</th>
+								<td>
+									<div id="conMenuList" class="menuList"></div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-			</div>
-			<div>
-				<table>
-					<caption>레스토랑 상세 정보</caption>
-					<tbody>
-						<tr>
-							<th>주소</th>
-							<td>${data.addr}</td>
-						</tr>
-						<tr>
-							<th>작성자</th>
-							<td>${data.user_nm}</td>
-						</tr>
-						<tr>
-							<th>카테고리</th>
-							<td>${data.cd_category_nm}</td>
-						</tr>
-						<tr>
-							<th>메뉴</th>
-							<td>
-								<div class="menuList">
-									<c:if test="${fn:length(menuList) >0}">
-										<c:forEach var="i" begin="0" end="${fn:length(menuList) > 3 ? 2 : fn:length(menuList) - 1}">
-											<div class="menuItem">
-												<img src="/resources/img/rest/${data.i_rest}/menu/${menuList[i].menu_pic}">
-											</div>
-										</c:forEach>
-									</c:if>
-									<c:if test="${fn:length(menuList) > 3}">
-										<div class="menuItem bg_black">
-											<div class="moreCnt">+${fn:length(menuList) - 3}</div>
-										</div>
-									</c:if>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
 			</div>
 		</div>
 	</div>
-
-	<script>
-	addRecMenu()
-		function addRecMenu() {
-			var div = document.createElement('div')
-
-			var inputNm = document.createElement('input')
-			inputNm.setAttribute('type', 'text')
-			inputNm.setAttribute('name', 'menu_nm')
-			var inputPrice = document.createElement('input')
-			inputPrice.setAttribute('type', 'number')
-			inputPrice.setAttribute('name', 'menu_price')
-			var inputPic = document.createElement('input')
-			inputPic.setAttribute('type', 'file')
-			inputPic.setAttribute('name', 'menu_pic')
-
-			div.append('메뉴: ')
-			div.append(inputNm)
-			div.append(' 가격: ')
-			div.append(inputPrice)
-			div.append(' 사진: ')
-			div.append(inputPic)
-
-			recItem.append(div)
-		}
-		
-		function isDel() {
-			if (confirm('삭제 하시겠습니까?')) {
-				location.href = '/rest/del?i_rest=${data.i_rest}'
-			}
-		}
-		
-		function delRecMenu(seq) {
-			axios.get('/rest/ajaxDelRecMenu',{
-				params:{
-					i_rest : ${data.i_rest},
-					seq,
-				}
-			}).then(function(res){
-				if(res.data == 1){
-					const ele = document.querySelector('#recMenuItem_'+seq)
-					ele.remove()
-				}
-			})			
-		}
-	</script>
 </div>
+<div id="carouselContainer" class="padeShow">
+	<div id="imgContainer">
+		<div class="swiper-container">
+			<div class="swiper-wrapper" id="imgWrapper">
+			</div>
+			<!-- Add Pagination -->
+			<div class="swiper-pagination"></div>
+			<!-- Add Arrows -->
+			<div class="swiper-button-next"></div>
+			<div class="swiper-button-prev"></div>
+		</div>
+	</div>
+	<div>
+		<span class="material-icons" onclick="closeCarousel()">clear</span>
+	</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
 
-
-
-
+function closeCarousel() {
+	carouselContainer.style.opacity = 0
+	carouselContainer.style.zIndex = -10
+}
+	var isMe = ${loginUser.i_user == data.i_user}
+	
+	var menuList = []
+	function ajaxSelMenuList() {
+		axios.get('/rest/ajaxSelMenuList', {
+			params: {
+				i_rest: ${data.i_rest}
+			}
+		}).then(function(res) {
+			menuList = res.data
+			refreshMenu()
+		})
+	}
+	
+	function refreshMenu() {
+		conMenuList.innerHTML = ''
+		menuList.forEach(function(item,idx) {
+			makeMenuItem(item,idx)
+		})
+		
+	}
+	
+	function makeMenuItem(item,idx) {
+			const div = document.createElement('div')
+			div.setAttribute('class', 'menuItem')
+			
+			const divimg = document.createElement('div')
+			divimg.setAttribute('class', 'swiper-slide')
+			
+			const img = document.createElement('img')
+			img.setAttribute('src', `/resources/img/rest/${data.i_rest}/menu/\${item.menu_pic}`)
+			img.style.cursor = 'pointer'
+			img.addEventListener('click', openCarousel)
+			div.append(img)
+			
+			const img2 = document.createElement('img')
+			img2.setAttribute('src', `/resources/img/rest/${data.i_rest}/menu/\${item.menu_pic}`)
+			img2.style.cursor = 'pointer'
+			divimg.append(img2)
+			
+			<c:if test="${loginUser.i_user == data.i_user}">
+				const delDiv = document.createElement('div')
+				delDiv.setAttribute('class', 'delIconContainer')
+				delDiv.addEventListener('click', function() {
+					if(idx > -1 ){
+						if(!confirm('삭제하시겠습니까?')) {
+							return
+						}
+						
+						axios.get('/rest/ajaxDelMenu', {
+							params: {
+								i_rest: ${data.i_rest},
+								seq: item.seq,
+								menu_pic : item.menu_pic
+							}
+						}).then(function(res) {
+							console.log(res)
+							if(res.data == 1) {
+								menuList.splice(idx,1)
+								mySwiper.removeSlide(idx)
+								refreshMenu()
+								
+							}else{
+								alert('메뉴를 지울수 없습니다.')
+							}
+						})
+					}
+				})
+				
+				const span = document.createElement('span')
+				span.setAttribute('class', 'material-icons')
+				span.innerText = 'clear'
+				
+				delDiv.append(span)
+				div.append(delDiv)
+			</c:if>
+				
+			mySwiper.addSlide(idx,divimg)
+			conMenuList.append(div)
+		
+	}
+	
+	function delRecMenu(seq) {
+		if(!confirm('삭제하시겠습니까?')) {
+			return
+		}	
+		console.log('seq : ' + seq)
+		
+		axios.get('/rest/ajaxDelRecMenu', {
+			params: {
+				i_rest: ${data.i_rest},
+				seq: seq
+			}
+		}).then(function(res) {
+			console.log(res)
+			if(res.data == 1) {
+				//엘리먼트 삭제
+				var ele = document.querySelector('#recMenuItem_' + seq)
+				ele.remove()
+			}
+		})
+	}
+	
+	<c:if test="${loginUser.i_user == data.i_user}">
+	var idx = 0;
+	function addRecMenu() {
+		var div = document.createElement('div')
+		div.setAttribute('id', 'recMenu_' + idx++)
+		
+		var inputNm = document.createElement('input')
+		inputNm.setAttribute('type', 'text')
+		inputNm.setAttribute('name', 'menu_nm')
+		var inputPrice = document.createElement('input')
+		inputPrice.setAttribute('type', 'number')
+		inputPrice.setAttribute('name', 'menu_price')
+		inputPrice.value = '0'
+		var inputPic = document.createElement('input')
+		inputPic.setAttribute('type', 'file')
+		inputPic.setAttribute('name', 'menu_pic')
+		var delBtn = document.createElement('input')
+		delBtn.setAttribute('type', 'button')
+		delBtn.setAttribute('value', 'X')		
+		delBtn.addEventListener('click', function() {
+			div.remove()
+		})		
+		div.append('메뉴: ')
+		div.append(inputNm)
+		div.append(' 가격: ')
+		div.append(inputPrice)
+		div.append(' 사진: ')
+		div.append(inputPic)
+		div.append(delBtn)
+		
+		recItem.append(div)
+	}
+	
+	function isDel() {
+		if(confirm('삭제 하시겠습니까?')) {
+			location.href = '/rest/del?i_rest=${data.i_rest}'
+		}
+	}
+	addRecMenu()
+	
+	</c:if>
+	ajaxSelMenuList()
+	
+	function openCarousel() {
+		carouselContainer.style.opacity = 1
+		carouselContainer.style.zIndex = 40
+	}
+	
+	makeCarousel()
+	var mySwiper
+	
+	function makeCarousel() {
+		mySwiper = new Swiper('.swiper-container', {
+			loop:true,
+	      pagination: {
+	        el: '.swiper-pagination',
+	        type: 'progressbar',
+	      },
+	      navigation: {
+	        nextEl: '.swiper-button-next',
+	        prevEl: '.swiper-button-prev',
+	      },
+	    });
+	}
+	
+</script>

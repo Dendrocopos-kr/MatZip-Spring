@@ -21,6 +21,10 @@
 		VALUES
 		(#{nm},#{addr},#{lat},#{lng},#{i_user},#{cd_category})
 	</insert>
+	
+	<select id="selRestChkUser" resultType="Integer" parameterType="Integer">
+		select i_user from t_restaurant where i_rest = #{i_rest}
+	</select>
 
 	<select id="selRest" parameterType="RestParam" resultType="RestDMI">
 		SELECT A.i_rest, A.lat, A.lng, A.nm, A.addr,
@@ -53,10 +57,9 @@
 		on
 		a.i_rest = b.i_rest
 		where b.i_rest = #{i_rest}
-		AND b.i_user = #{i_user}
 		<if test="seq > 0 ">
 		</if>
-			AND A.seq = #{seq}
+		AND A.seq = #{seq}
 	</delete>
 
 	<delete id="delRestRecMenu" parameterType="RestParam">
@@ -64,7 +67,8 @@
 		inner join
 		t_restaurant B
 		on a.i_rest = b.i_rest
-		where b.i_rest = #{i_rest}
+		where b.i_rest =
+		#{i_rest}
 		AND b.i_user = #{i_user}
 		<if test="seq > 0 ">
 			AND A.seq = #{seq}
@@ -89,10 +93,32 @@
 			ON A.i_rest = B.i_rest
 			AND B.i_user = #{i_user}
 		</if>
-		where i_rest = #{i_rest}
+		where A.i_rest = #{i_rest}
 		<if test="seq > 0">
 			AND A.seq = #{seq}
 		</if>
 	</select>
+
+	<select id="selMenus" parameterType="RestParam" resultType="RestMenuVO">
+		select A.i_rest, A.seq, A.menu_pic
+		from
+		t_restaurant_menu A
+		where i_rest = #{i_rest}
+		<if test="seq > 0">
+			And A.seq = #{seq}
+		</if>
+		order by A.seq DESC
+	</select>
+	<insert id="insRestMenu" parameterType="RestMenuVO">
+		insert into t_restaurant_menu
+		(i_rest,seq,menu_pic)
+		select
+		#{i_rest},ifnull(max(seq),0)+1,#{menu_pic}
+		from
+		t_restaurant_menu
+		where
+		i_rest = #{i_rest}
+	</insert>
+
 
 </mapper>

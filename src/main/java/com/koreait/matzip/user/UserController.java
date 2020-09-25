@@ -47,7 +47,7 @@ public class UserController {
 		int result = service.login(param);
 		if (result == Const.SUCCESS) {
 			hs.setAttribute(Const.LOGIN_USER, param);
-			return "redirect:/rest/map";
+			return "redirect:/";
 		}
 		String msg = null;
 		if(result == Const.NO_ID) {

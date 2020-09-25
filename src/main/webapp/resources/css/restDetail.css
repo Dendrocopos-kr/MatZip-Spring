@@ -1,31 +1,33 @@
 @charset "UTF-8";
+
 .recMenuContainer {
 	overflow-x: scroll;
 	padding: 5px;
 	display: flex;
 }
 
-.recMenuContainer > .recMenuItem {
+.recMenuContainer>.recMenuItem {
 	position: relative;
 	margin: 5px;
-    min-width: 200px;
-    max-width: 200px;
+	min-width: 200px;
+	max-width: 200px;
 }
 
-.recMenuContainer > .recMenuItem > .pic {
+.recMenuContainer>.recMenuItem>.pic {
 	width: 100%;
 	height: 100%;
 }
 
-.recMenuContainer > .recMenuItem > .pic > img {
+.recMenuContainer>.recMenuItem>.pic>img {
 	width: 100%;
 }
 
-.recMenuContainer > .recMenuItem > .info {
+.recMenuContainer>.recMenuItem>.info {
 	width: 100%;
 	height: 30px;
-} 
-.recMenuContainer > .recMenuItem > .delIconContainer{
+}
+
+.recMenuContainer>.recMenuItem>.delIconContainer {
 	position: absolute;
 	cursor: pointer;
 	top: 10px;
@@ -38,8 +40,16 @@
 }
 
 .menuList .menuItem {
+	position: relative;
 	width: 70px;
 	height: 70px;
+}
+
+.menuList>.menuItem>.delIconContainer {
+	position: absolute;
+	cursor: pointer;
+	top: 5px;
+	right: 5px;
 }
 
 .menuList .menuItem:not(:first-child) {
@@ -62,4 +72,68 @@
 
 .restaurant-detail {
 	padding: 5px 0 10px 0;
+}
+
+#sectionContainerCenter {
+	z-index: 20;
+}
+
+#carouselContainer {
+	transition: 1s;
+	opacity: 0;
+	z-index: -10;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #00000078;
+	left: 0px;
+	top: 0px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#carouselContainer #imgContainer {
+	background: #ffffff;
+	width: 60%;
+	height: 80%;
+	position: relative;
+}
+
+.swiper-container {
+	width: 100%;
+	height: 100%;
+}
+
+.swiper-wrapper img{
+	width: 100%;
+	overflow: hidden;
+}
+
+.swiper-slide {
+	text-align: center;
+	font-size: 18px;
+	background: #fff;
+	/* Center slide text vertically */
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+}
+
+#carouselContainer .material-icons {
+	display: inline-block;
+	position: absolute;
+	top: 40px;
+	color: #ffffff;
+	cursor: pointer;
+	font-size: 3rem;
 }

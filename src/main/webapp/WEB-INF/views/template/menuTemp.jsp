@@ -7,12 +7,12 @@
 <meta charset="UTF-8">
 <title>${title}</title>
 <link rel="stylesheet" type="text/css"
-	href="/resources/css/common.css?ver=3">
+	href="/resources/css/common.css?ver=5">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 <c:forEach items="${css}" var="item">
 	<link rel="stylesheet" type="text/css"
-		href="/resources/css/${item}.css?ver=18">
+		href="/resources/css/${item}.css?ver=21">
 </c:forEach>
 </head>
 <body>

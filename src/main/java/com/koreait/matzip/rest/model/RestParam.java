@@ -6,7 +6,14 @@ public class RestParam extends RestVO {
 	double ne_lat;
 	double ne_lng;
 	int seq;
+	String menu_pic;
 	
+	public String getMenu_pic() {
+		return menu_pic;
+	}
+	public void setMenu_pic(String menu_pic) {
+		this.menu_pic = menu_pic;
+	}
 	public int getSeq() {
 		return seq;
 	}

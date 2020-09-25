@@ -15,13 +15,11 @@ public class LoginCheckInterceptor extends HandlerInterceptorAdapter {
 
 		String uri = request.getRequestURI();
 		String[] uriArr = uri.split("/");
-
-		if (uriArr[1].equals("resources")) {
+		if (uri.equals("/")) {
 			return super.preHandle(request, response, handler);
-		} else if (uriArr.length < 3) {
-			return false;
+		} else if (uriArr[1].equals("resources")) {
+			return super.preHandle(request, response, handler);
 		}
-
 
 		boolean isLogout = SecurityUtils.isLogout(request);
 
